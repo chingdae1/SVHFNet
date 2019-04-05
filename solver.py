@@ -68,6 +68,7 @@ class Solver():
                 real_audio = real_audio.to(self.device)
                 face_a = face_a.to(self.device)
                 face_b = face_b.to(self.device)
+                labels = labels.to(self.device)
                 outputs = self.net(face_a, face_b, real_audio)
                 loss = self.criterion(outputs, labels)
                 self.optim.zero_grad()
