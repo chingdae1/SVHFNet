@@ -85,9 +85,9 @@ class SVHFNet(nn.Module):
         self.fc10 = nn.Linear(512, 2)
 
     def forward(self, face_a, face_b, audio):
-        f_a_embedding_ = self.visual_stream(face_a)
-        f_b_embedding = self.visual_stream(face_b)
-        a_embedding = self.audio_stream(audio)
+        f_a_embedding_ = self.vis_stream(face_a)
+        f_b_embedding = self.vis_stream(face_b)
+        a_embedding = self.aud_stream(audio)
         concat = torch.cat([f_a_embedding_, f_b_embedding, a_embedding], dim=1)
         x = self.fc8(concat)
         x = self.fc9(x)
