@@ -2,8 +2,8 @@ model_name: baseline
 
 data_dir: ./output
 triplet_dir: ./triplets
-batch_size: 32
-num_workers: 2
+batch_size: 64
+num_workers: 16
 
 lr: 0.01
 epoch: 10
