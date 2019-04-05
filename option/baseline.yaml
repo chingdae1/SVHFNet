@@ -1,0 +1,23 @@
+model_name: baseline
+
+data_dir: ./output
+triplet_dir: ./triplets
+batch_size: 32
+num_workers: 2
+
+lr: 0.01
+epoch: 10
+
+load_model: False
+load_path: ./
+
+val_every: 2
+save_every: 1
+sample_for: 20
+val_sample_dir: ./val_sample
+save_dir: ./saved
+
+multi_gpu: False
+gpu_ids:
+    - 0
+    - 1
