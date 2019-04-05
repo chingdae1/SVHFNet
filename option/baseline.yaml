@@ -1,6 +1,6 @@
 model_name: baseline
 
-data_dir: ./workspace2/SVHF_dataset
+data_dir: /workspace2/SVHF_dataset
 triplet_dir: ./triplets
 batch_size: 64
 num_workers: 16
