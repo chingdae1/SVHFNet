@@ -10,7 +10,7 @@ epoch: 1
 lr_decay_factor: 0.1
 patience: 1
 
-load_model: True
+load_model: False
 load_path: ./saved/baseline/model_6.pt
 
 val_every: 1
