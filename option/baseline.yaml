@@ -6,18 +6,20 @@ batch_size: 64
 num_workers: 32
 
 lr: 0.01
-epoch: 10
+epoch: 0
+lr_decay_factor: 0.1
+patience: 1
 
-load_model: False
-load_path: ./
+load_model: True
+load_path: ./saved/baseline/model_6.pt
 
-val_every: 2
+val_every: 1
 save_every: 1
 sample_for: 20
 val_sample_dir: ./val_sample
 save_dir: ./saved
 
-multi_gpu: True
+multi_gpu: False
 gpu_ids:
     - 0
     - 1

@@ -9,12 +9,13 @@ from PIL import Image
 
 
 class Dataset(data.Dataset):
-    def __init__(self, data_dir, triplet_dir, mode):
+    def __init__(self, data_dir, triplet_dir, mode, fixed_offset):
         self.data_dir = data_dir
+        self.fixed_offset = fixed_offset
         triplet_path = os.path.join(triplet_dir, 'triplets_' + mode + '.txt')
         with open(triplet_path, 'r') as f:
             self.all_triplets = f.readlines()
-        self.all_triplets = self.all_triplets[1:]
+        self.all_triplets = self.all_triplets[1:65]
         self.transform = transforms.Compose(
             [transforms.ToTensor(),
              transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
@@ -43,8 +44,11 @@ class Dataset(data.Dataset):
 
     def load_audio(self, audio_path):
         y = np.load(audio_path)
-        max_offset = y.shape[0] - 48000
-        offset = random.randint(0, max_offset)
+        if self.fixed_offset:
+            offset = 0
+        else:
+            max_offset = y.shape[0] - 48000
+            offset = random.randint(0, max_offset)
         y = y[offset:offset+48000]
         spect = Dataset.get_spectrogram(y)
         for i in range(spect.shape[1]):
@@ -90,7 +94,7 @@ if __name__ == '__main__':
     from torch.utils.data import DataLoader
 
     dataset = Dataset('./output', './triplets', 'train')
-    loader = DataLoader(dataset, batch_size=2, shuffle=False, drop_last=True, num_workers=0, collate_fn=custom_collate_fn)
+    loader = DataLoader(dataset, batch_size=32, shuffle=False, drop_last=True, num_workers=0, collate_fn=custom_collate_fn)
 
     for step, (real_audio, face_a, face_b, ground_truth) in enumerate(loader):
         print(real_audio.shape)  # (B, 1, 512, 300)
