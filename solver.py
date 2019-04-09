@@ -131,8 +131,13 @@ class Solver():
         return average_loss
 
     def save(self, epoch):
+        if self.config['multi_gpu']:
+            state_dict = self.net.module.state_dict()
+        else:
+            state_dict = self.net.state_dict()
+
         checkpoint = {
-            'net': self.net.module.state_dict()
+            'net': state_dict
         }
 
         output_path = os.path.join(self.saved_dir, 'model_' + str(epoch) + '.pt')
