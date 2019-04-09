@@ -15,7 +15,7 @@ class Dataset(data.Dataset):
         triplet_path = os.path.join(triplet_dir, 'triplets_' + mode + '.txt')
         with open(triplet_path, 'r') as f:
             self.all_triplets = f.readlines()
-        self.all_triplets = self.all_triplets[1:65]
+        self.all_triplets = self.all_triplets[1:]
         self.transform = transforms.Compose(
             [transforms.ToTensor(),
              transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]

@@ -1,4 +1,4 @@
-model_name: baseline
+model_name: baseline_plateau
 
 data_dir: /workspace2/SVHF_dataset
 triplet_dir: ./triplets
