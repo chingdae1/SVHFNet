@@ -93,7 +93,7 @@ def custom_collate_fn(batch):
 if __name__ == '__main__':
     from torch.utils.data import DataLoader
 
-    dataset = Dataset('../SVHF_dataset', './triplets', 'train')
+    dataset = Dataset('../SVHF_dataset', './triplets', 'train', False)
     loader = DataLoader(dataset, batch_size=32, shuffle=False, drop_last=True, num_workers=0, collate_fn=custom_collate_fn)
 
     for step, (real_audio, face_a, face_b, ground_truth) in enumerate(loader):
