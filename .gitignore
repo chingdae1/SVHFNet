@@ -3,3 +3,4 @@ triplets/
 .idea/
 __pycache__/
 .DS_Store
+toy_dataset
