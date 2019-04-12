@@ -24,7 +24,7 @@ class Dataset(data.Dataset):
     def __getitem__(self, index):
         triplet = self.all_triplets[index].split('\t')
         triplet[1] = triplet[1].replace('.wav', '.wav.npy')
-        triplet[1] = triplet[1].replace('vox1_dev_wav', 'vox1_dev_npy')
+        triplet[1] = triplet[1].replace('vox1_dev_wav', 'vox1_dev_norm')
         real_audio_path = os.path.join(self.data_dir, triplet[1])
         real_face_path = os.path.join(self.data_dir, triplet[2])
         fake_face_path = os.path.join(self.data_dir, triplet[3])
@@ -47,17 +47,17 @@ class Dataset(data.Dataset):
         if self.fixed_offset:
             offset = 0
         else:
-            max_offset = y.shape[0] - 48000
+            max_offset = y.shape[2] - 300
             offset = random.randint(0, max_offset)
-        y = y[offset:offset+48000]
-        spect = Dataset.get_spectrogram(y)
-        for i in range(spect.shape[1]):
-            f_bin = spect[:, i]
-            f_bin_mean = np.mean(f_bin)
-            f_bin_std = np.std(f_bin)
-            spect[:, i] = (spect[:, i] - f_bin_mean) / f_bin_std
-        spect = np.expand_dims(spect, axis=0)
-        return spect
+        y = y[:, :, offset:offset+300]
+        # spect = Dataset.get_spectrogram(y)
+        # for i in range(spect.shape[1]):
+        #     f_bin = spect[:, i]
+        #     f_bin_mean = np.mean(f_bin)
+        #     f_bin_std = np.std(f_bin)
+        #     spect[:, i] = (spect[:, i] - f_bin_mean) / f_bin_std
+        # spect = np.expand_dims(spect, axis=0)
+        return y
 
     def load_face(self, face_path):
         # NOTE: 3 channels are in BGR order
@@ -93,7 +93,7 @@ def custom_collate_fn(batch):
 if __name__ == '__main__':
     from torch.utils.data import DataLoader
 
-    dataset = Dataset('./output', './triplets', 'train')
+    dataset = Dataset('../SVHF_dataset', './triplets', 'train')
     loader = DataLoader(dataset, batch_size=32, shuffle=False, drop_last=True, num_workers=0, collate_fn=custom_collate_fn)
 
     for step, (real_audio, face_a, face_b, ground_truth) in enumerate(loader):
