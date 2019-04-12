@@ -3,7 +3,7 @@ model_name: baseline_norm
 data_dir: ../SVHF_dataset
 triplet_dir: ./triplets
 batch_size: 1
-num_workers: 32
+num_workers: 0
 
 lr: 0.001
 epoch: 20
