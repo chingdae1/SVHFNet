@@ -73,6 +73,8 @@ class Solver():
         for epoch in range(self.config['epoch']):
             for step, (real_audio, face_a, face_b, labels) in enumerate(self.train_loader):
                 real_audio = real_audio.to(self.device)
+                # print(real_audio)
+                print(torch.isnan(real_audio).sum().item())
                 face_a = face_a.to(self.device)
                 face_b = face_b.to(self.device)
                 labels = labels.to(self.device)
@@ -106,8 +108,6 @@ class Solver():
         with torch.no_grad():
             for step, (real_audio, face_a, face_b, labels) in enumerate(self.val_loader):
                 real_audio = real_audio.to(self.device)
-                print(real_audio)
-                print(torch.isnan(real_audio).sum().item())
                 face_a = face_a.to(self.device)
                 face_b = face_b.to(self.device)
                 labels = labels.to(self.device)
