@@ -24,7 +24,7 @@ class Dataset(data.Dataset):
     def __getitem__(self, index):
         triplet = self.all_triplets[index].split('\t')
         triplet[1] = triplet[1].replace('.wav', '.wav.npy')
-        triplet[1] = triplet[1].replace('vox1_dev_wav', 'vox1_dev_norm')
+        triplet[1] = triplet[1].replace('vox1_dev_wav', 'vox1_dev_npy')
         real_audio_path = os.path.join(self.data_dir, triplet[1])
         real_face_path = os.path.join(self.data_dir, triplet[2])
         fake_face_path = os.path.join(self.data_dir, triplet[3])
