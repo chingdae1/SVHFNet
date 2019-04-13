@@ -6,7 +6,7 @@ batch_size: 1
 num_workers: 0
 
 lr: 0.001
-epoch: 20
+epoch: 100000
 lr_decay_factor: 0.1
 patience: 1
 
