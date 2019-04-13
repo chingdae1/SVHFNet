@@ -42,7 +42,7 @@ class Solver():
                                       drop_last=True,
                                       collate_fn=custom_collate_fn)
 
-        model = importlib.import_module('{}'.format(config['model']))
+        model = importlib.import_module((config['model']))
         self.net = model.SVHFNet().to(self.device)
         if config['load_model']:
             print('Load pretrained model..')
