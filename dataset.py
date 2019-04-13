@@ -47,17 +47,17 @@ class Dataset(data.Dataset):
         if self.fixed_offset:
             offset = 0
         else:
-            max_offset = y.shape[2] - 300
+            max_offset = y.shape[0] - 48000
             offset = random.randint(0, max_offset)
-        y = y[:, :, offset:offset+300]
-        # spect = Dataset.get_spectrogram(y)
-        # for i in range(spect.shape[1]):
-        #     f_bin = spect[:, i]
-        #     f_bin_mean = np.mean(f_bin)
-        #     f_bin_std = np.std(f_bin)
-        #     spect[:, i] = (spect[:, i] - f_bin_mean) / f_bin_std
-        # spect = np.expand_dims(spect, axis=0)
-        return y
+        y = y[offset:offset+48000]
+        spect = Dataset.get_spectrogram(y)
+        for i in range(spect.shape[1]):
+            f_bin = spect[:, i]
+            f_bin_mean = np.mean(f_bin)
+            f_bin_std = np.std(f_bin)
+            spect[:, i] = (spect[:, i] - f_bin_mean) / (f_bin_std + 1e-7)
+        spect = np.expand_dims(spect, axis=0)
+        return spect
 
     def load_face(self, face_path):
         # NOTE: 3 channels are in BGR order
