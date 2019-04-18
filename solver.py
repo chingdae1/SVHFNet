@@ -10,7 +10,7 @@ import os
 class Solver():
     def __init__(self, config):
         self.config = config
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         self.train_data = Dataset(data_dir=config['data_dir'],
                                   triplet_dir=config['triplet_dir'],
                                   mode='train',
