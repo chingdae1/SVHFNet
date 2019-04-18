@@ -52,7 +52,7 @@ class Solver():
 
         if config['multi_gpu']:
             print('Use Multi GPU')
-            self.net = nn.DataParallel(self.net)
+            self.net = nn.DataParallel(self.net, device_ids=config['gpu_ids'])
 
         self.criterion = nn.CrossEntropyLoss()
         self.optim = torch.optim.SGD(params=self.net.parameters(),
