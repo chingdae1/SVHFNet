@@ -59,9 +59,6 @@ class Solver():
                                      lr=config['lr'],
                                      momentum=0.9,
                                      weight_decay=0.0005)
-        # rule = lambda epoch: 10**(-epoch) if epoch < 7 else 10**-6,
-        # self.scheduler = torch.optim.lr_scheduler.LambdaLR(self.optim,
-        #                                                    lr_lambda=rule)
         self.scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(self.optim,
                                                                     factor=config['lr_decay_factor'],
                                                                     patience=config['patience'],
@@ -77,7 +74,12 @@ class Solver():
                 face_a = face_a.to(self.device)
                 face_b = face_b.to(self.device)
                 labels = labels.to(self.device)
+                print(real_audio.size())
+                print(face_a.size())
+                print(labels.size())
                 outputs = self.net(face_a, face_b, real_audio)
+                print(outputs.size())
+                print('==============================')
                 loss = self.criterion(outputs, labels)
                 self.optim.zero_grad()
                 loss.backward()
@@ -152,7 +154,7 @@ class Solver():
 
                 print('[test] Step[{}/{}]  Loss: {:.8f}  Accuracy: {:.2f}%'.format(
                     step + 1,
-                    self.val_data.__len__() // self.config['batch_size'],
+                    self.test_data.__len__() // self.config['batch_size'],
                     loss.item(), accuracy.item() * 100
                 ))
                 cnt += 1
@@ -160,7 +162,7 @@ class Solver():
             average_acc = total_acc / cnt
             print('[Test]  Average Loss: {:.8f}  Average Accuracy: {:.2f}'.format(
                 average_loss, average_acc))
-            self.net.train()
+        self.net.train()
 
     def save(self, epoch):
         if self.config['multi_gpu']:
