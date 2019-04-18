@@ -131,6 +131,37 @@ class Solver():
         self.net.train()
         return average_loss
 
+    def test(self):
+        print('Start test')
+        self.net.eval()
+        cnt = 0
+        total_loss = 0
+        total_acc = 0
+        with torch.no_grad():
+            for step, (real_audio, face_a, face_b, labels) in enumerate(self.test_loader):
+                real_audio = real_audio.to(self.device)
+                face_a = face_a.to(self.device)
+                face_b = face_b.to(self.device)
+                labels = labels.to(self.device)
+                outputs = self.net(face_a, face_b, real_audio)
+                loss = self.criterion(outputs, labels)
+                total_loss += loss
+                _, argmax = torch.max(outputs, 1)
+                accuracy = (labels == argmax.squeeze()).float().mean()
+                total_acc += accuracy
+
+                print('[test] Step[{}/{}]  Loss: {:.8f}  Accuracy: {:.2f}%'.format(
+                    step + 1,
+                    self.val_data.__len__() // self.config['batch_size'],
+                    loss.item(), accuracy.item() * 100
+                ))
+                cnt += 1
+            average_loss = total_loss / cnt
+            average_acc = total_acc / cnt
+            print('[Test]  Average Loss: {:.8f}  Average Accuracy: {:.2f}'.format(
+                average_loss, average_acc))
+            self.net.train()
+
     def save(self, epoch):
         if self.config['multi_gpu']:
             state_dict = self.net.module.state_dict()
