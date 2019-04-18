@@ -1,5 +1,5 @@
 model_name: test
-model: model1
+model: model
 
 data_dir: ../SVHF_dataset
 triplet_dir: ./triplets
