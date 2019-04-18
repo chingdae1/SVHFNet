@@ -1,62 +1,39 @@
-# Deeper VGG Face
 import torch
 import torch.nn as nn
 
 
+# No Batchnorm version
 class VisualStream(nn.Module):
     def __init__(self):
         super().__init__()
         self.body = nn.Sequential(
-            nn.Conv2d(3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
-            nn.BatchNorm2d(64), nn.ReLU(),
-            nn.Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
-            nn.BatchNorm2d(64),nn.ReLU(),
-            nn.MaxPool2d(kernel_size=[2, 2], stride=[2, 2]),
+            nn.Conv2d(in_channels=3, out_channels=96, kernel_size=(7, 7), stride=2, padding=3),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=(2, 2)),
 
-            nn.Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
-            nn.BatchNorm2d(128), nn.ReLU(),
-            nn.Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
-            nn.BatchNorm2d(128), nn.ReLU(),
-            nn.MaxPool2d(kernel_size=[2, 2], stride=[2, 2]),
+            nn.Conv2d(in_channels=96, out_channels=256, kernel_size=(5, 5), stride=2, padding=2),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=(2, 2)),
 
-            nn.Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
-            nn.BatchNorm2d(256), nn.ReLU(),
-            nn.Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
-            nn.BatchNorm2d(256), nn.ReLU(),
-            nn.Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
-            nn.BatchNorm2d(256), nn.ReLU(),
-            nn.MaxPool2d(kernel_size=[2, 2], stride=[2, 2]),
+            nn.Conv2d(in_channels=256, out_channels=256, kernel_size=(3, 3), padding=1),
+            nn.ReLU(),
 
-            nn.Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
-            nn.BatchNorm2d(512), nn.ReLU(),
-            nn.Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
-            nn.BatchNorm2d(512), nn.ReLU(),
-            nn.Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
-            nn.BatchNorm2d(512), nn.ReLU(),
-            nn.MaxPool2d(kernel_size=[2, 2], stride=[2, 2]),
+            nn.Conv2d(in_channels=256, out_channels=256, kernel_size=(3, 3), padding=1),
+            nn.ReLU(),
 
-            nn.Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
-            nn.BatchNorm2d(512), nn.ReLU(),
-            nn.Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
-            nn.BatchNorm2d(512), nn.ReLU(),
-            nn.Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
-            nn.BatchNorm2d(512), nn.ReLU(),
-            nn.MaxPool2d(kernel_size=[2, 2], stride=[2, 2])
+            nn.Conv2d(in_channels=256, out_channels=256, kernel_size=(3, 3), padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=(2, 2))
         )
-        self.fc6 = nn.Linear(25088, 4096)
+        self.fc6 = nn.Linear(7*7*256, 4096)
         self.relu6 = nn.ReLU()
-        self.dropout6 = nn.Dropout(p=0.5)
-        self.fc7 = nn.Linear(4096, 4096)
-        self.relu7 = nn.ReLU()
-        self.dropout7 = nn.Dropout(p=0.5)
-        self.fc8 = nn.Linear(4096, 1024)
+        self.fc7 = nn.Linear(4096, 1024)
 
     def forward(self, x):
-        x = self.body(x)
+        x = self.body(x)  # (B, 256, 7, 7)
         x = x.view(x.shape[0], -1)
-        x = self.dropout6(self.relu6(self.fc6(x)))
-        x = self.dropout7(self.relu7(self.fc7(x)))
-        x = self.fc8(x)
+        x = self.relu6(self.fc6(x))
+        x = self.fc7(x)
         return x
 
 
@@ -65,21 +42,21 @@ class AudioStream(nn.Module):
         super().__init__()
         self.body = nn.Sequential(
             nn.Conv2d(in_channels=1, out_channels=96, kernel_size=(7, 7), stride=2, padding=1),
-            nn.BatchNorm2d(96), nn.ReLU(),
+            nn.ReLU(),
             nn.MaxPool2d(kernel_size=(2, 2)),
 
             nn.Conv2d(in_channels=96, out_channels=256, kernel_size=(5, 5), stride=2, padding=(0, 1)),
-            nn.BatchNorm2d(256), nn.ReLU(),
+            nn.ReLU(),
             nn.MaxPool2d(kernel_size=(2, 2)),
 
             nn.Conv2d(in_channels=256, out_channels=256, kernel_size=(3, 3), padding=1),
-            nn.BatchNorm2d(256), nn.ReLU(),
+            nn.ReLU(),
 
             nn.Conv2d(in_channels=256, out_channels=256, kernel_size=(3, 3), padding=1),
-            nn.BatchNorm2d(256), nn.ReLU(),
+            nn.ReLU(),
 
             nn.Conv2d(in_channels=256, out_channels=256, kernel_size=(3, 3)),
-            nn.BatchNorm2d(256), nn.ReLU(),
+            nn.ReLU(),
             nn.MaxPool2d(kernel_size=(3, 2)),
         )
         self.fc6 = nn.Linear(9*1*256, 4096)
@@ -129,7 +106,9 @@ if __name__ == '__main__':
 
     net = SVHFNet()
     output = net(face_a, face_b, audio)
-    print(output.shape)
     _, argmax = torch.max(output, 1)
     labels = torch.LongTensor([0, 0, 1, 1])
+    print(output)
+    print(argmax)
     accuracy = (labels == argmax.squeeze()).float().mean()
+    print(accuracy.item() * 100)

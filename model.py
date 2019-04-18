@@ -89,9 +89,6 @@ class SVHFNet(nn.Module):
         self.fc10 = nn.Linear(512, 2)
 
     def forward(self, face_a, face_b, audio):
-        print('in_model____')
-        print(face_a.size())
-        print(audio.size())
         f_a_embedding_ = self.vis_stream(face_a)
         f_b_embedding = self.vis_stream(face_b)
         a_embedding = self.aud_stream(audio)
