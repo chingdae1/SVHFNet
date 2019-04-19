@@ -73,7 +73,7 @@ class AudioStream(nn.Module):
 class SVHFNet(nn.Module):
     def __init__(self):
         super().__init__()
-        self.vis_stream = SNResNet()
+        self.vis_stream = ResNet()
         self.aud_stream = AudioStream()
         self.fc8 = nn.Linear(3072, 1024)
         self.relu8 = nn.ReLU()
