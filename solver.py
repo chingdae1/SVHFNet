@@ -57,7 +57,7 @@ class Solver():
         elif config['weight_init'] == 'gaussian':
             print('Initialize weight with gaussian.')
         else:
-            print('Initialize weight with pytorch defualt setting.')
+            print('Initialize weight with defualt setting.')
         self.net.apply(weight_init)
         if config['load_model']:
             print('Load pretrained model:', config['load_path'])
