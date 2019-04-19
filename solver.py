@@ -49,12 +49,12 @@ class Solver():
                                       drop_last=True,
                                       collate_fn=custom_collate_fn)
         model = importlib.import_module((config['model']))
+        self.net = model.SVHFNet().to(self.device)
         if config['weight_init'] == 'xavier_uniform':
             print('Initialize weight with xavier_uniform.')
         else:
             print('Initialize weight with gaussian.')
-        model.apply(weight_init)
-        self.net = model.SVHFNet().to(self.device)
+        self.net.apply(weight_init)
         if config['load_model']:
             print('Load pretrained model:', config['load_path'])
             checkpoint = torch.load(config['load_path'])
