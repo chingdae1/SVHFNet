@@ -17,7 +17,6 @@ class Solver():
                     nn.init.normal_(m.weight, mean=0, std=0.01)
                 else:
                     pass
-
         self.config = config
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         self.train_data = Dataset(data_dir=config['data_dir'],

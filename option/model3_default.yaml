@@ -1,0 +1,27 @@
+model_name: model3_default
+model: model3
+
+data_dir: ../SVHF_dataset
+triplet_dir: ./triplets
+batch_size: 64
+num_workers: 32
+
+lr: 0.01
+epoch: 30
+lr_decay_factor: 0.1
+patience: 1
+weight_init: default
+
+load_model: False
+load_path: ./saved/baseline_plateau/model_1.pt
+
+val_every: 1
+save_every: 1
+sample_for: 20
+val_sample_dir: ./val_sample
+save_dir: ./saved
+
+multi_gpu: True
+gpu_ids:
+    - 0
+    - 1
