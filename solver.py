@@ -9,6 +9,13 @@ import os
 
 class Solver():
     def __init__(self, config):
+        def weight_init(m):
+            if isinstance(m, nn.Linear) or isinstance(m, nn.Conv2d):
+                if config['weight_init'] == 'xavier_uniform':
+                    nn.init.xavier_uniform_(m.weight)
+                else:
+                    nn.init.normal_(m.weight, mean=0, std=0.01)
+
         self.config = config
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         self.train_data = Dataset(data_dir=config['data_dir'],
@@ -41,11 +48,15 @@ class Solver():
                                       shuffle=False,
                                       drop_last=True,
                                       collate_fn=custom_collate_fn)
-
         model = importlib.import_module((config['model']))
+        if config['weight_init'] == 'xavier_uniform':
+            print('Initialize weight with xavier_uniform.')
+        else:
+            print('Initialize weight with gaussian.')
+        model.apply(weight_init)
         self.net = model.SVHFNet().to(self.device)
         if config['load_model']:
-            print('Load pretrained model..')
+            print('Load pretrained model:', config['load_path'])
             checkpoint = torch.load(config['load_path'])
             state_dict = checkpoint['net']
             self.net.load_state_dict(state_dict)

@@ -1,4 +1,4 @@
-model_name: baseline_model2
+model_name: baseline_model2_xavier
 model: model2
 
 data_dir: ../SVHF_dataset
@@ -10,6 +10,7 @@ lr: 0.01
 epoch: 30
 lr_decay_factor: 0.1
 patience: 1
+weight_init: xavier_uniform
 
 load_model: False
 load_path: ./saved/baseline_plateau/model_1.pt

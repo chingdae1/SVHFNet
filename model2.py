@@ -99,6 +99,7 @@ class SVHFNet(nn.Module):
         x = self.fc10(x)
         return x
 
+
 if __name__ == '__main__':
     face_a = torch.empty((4, 3, 224, 224))
     face_b = torch.empty((4, 3, 224, 224))
