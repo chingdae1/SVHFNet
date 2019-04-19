@@ -3,8 +3,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from submodule.resblock import Block, OptimizedBlock
 
-# SNRestNet for visual stream
 
+# SNRestNet for visual stream
 class SNResNet(nn.Module):
     def __init__(self, ch=64, activation=F.relu):
         super(SNResNet, self).__init__()
