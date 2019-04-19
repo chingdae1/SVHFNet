@@ -70,10 +70,12 @@ class Solver():
             self.net = nn.DataParallel(self.net, device_ids=config['gpu_ids'])
 
         self.criterion = nn.CrossEntropyLoss()
-        self.optim = torch.optim.SGD(params=self.net.parameters(),
-                                     lr=config['lr'],
-                                     momentum=0.9,
-                                     weight_decay=0.0005)
+        # self.optim = torch.optim.SGD(params=self.net.parameters(),
+        #                              lr=config['lr'],
+        #                              momentum=0.9,
+        #                              weight_decay=0.0005)
+        self.optim = torch.optim.Adam(params=self.net.parameters(),
+                                      lr=config['lr'])
         self.scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(self.optim,
                                                                     factor=config['lr_decay_factor'],
                                                                     patience=config['patience'],
