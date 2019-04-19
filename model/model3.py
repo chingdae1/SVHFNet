@@ -4,10 +4,10 @@ import torch.nn.functional as F
 from submodule.resblock import Block, OptimizedBlock
 
 
-# SNRestNet for visual stream
-class SNResNet(nn.Module):
+# RestNet for visual stream
+class ResNet(nn.Module):
     def __init__(self, ch=64, activation=F.relu):
-        super(SNResNet, self).__init__()
+        super(ResNet, self).__init__()
         self.activation = activation
         self.block1 = OptimizedBlock(3, ch)
         self.block2 = Block(ch, ch * 2, activation=activation, downsample=True)

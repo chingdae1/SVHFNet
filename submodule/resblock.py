@@ -1,5 +1,3 @@
-import torch
-import math
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -12,15 +10,9 @@ class Block(nn.Module):
         self.downsample = downsample
         self.conv1 = nn.Conv2d(in_channels, hidden_channels, k_size, padding=pad)
         self.conv2 = nn.Conv2d(hidden_channels, out_channels, k_size, padding=pad)
-        nn.init.xavier_uniform_(self.conv1.weight.data, math.sqrt(2))
-        nn.init.xavier_uniform_(self.conv2.weight.data, math.sqrt(2))
-        self.conv1 = nn.utils.spectral_norm(self.conv1)
-        self.conv2 = nn.utils.spectral_norm(self.conv2)
         self.learnable_sc = (in_channels != out_channels) or downsample
         if self.learnable_sc:
             self.conv_sc = nn.Conv2d(in_channels, out_channels, kernel_size=1, padding=0)
-            nn.init.xavier_uniform_(self.conv_sc.weight.data, 1.)
-            self.conv_sc = nn.utils.spectral_norm(self.conv_sc)
 
     def residual(self, x):
         h = x
@@ -52,11 +44,7 @@ class OptimizedBlock(nn.Module):
         self.activation = activation
         self.conv1 = nn.Conv2d(in_channels, out_channels, k_size, padding=pad)
         self.conv2 = nn.Conv2d(out_channels, out_channels, k_size, padding=pad)
-        nn.init.xavier_uniform_(self.conv1.weight.data, math.sqrt(2))
-        nn.init.xavier_uniform_(self.conv2.weight.data, math.sqrt(2))
         self.conv_sc = nn.Conv2d(in_channels, out_channels, kernel_size=1, padding=0)
-        nn.init.xavier_uniform_(self.conv_sc.weight.data, 1.)
-        self.conv_sc = nn.utils.spectral_norm(self.conv_sc)
 
     def residual(self, x):
         h = x
