@@ -13,8 +13,10 @@ class Solver():
             if isinstance(m, nn.Linear) or isinstance(m, nn.Conv2d):
                 if config['weight_init'] == 'xavier_uniform':
                     nn.init.xavier_uniform_(m.weight)
-                else:
+                elif config['weight_init'] == 'gaussian':
                     nn.init.normal_(m.weight, mean=0, std=0.01)
+                else:
+                    pass
 
         self.config = config
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -48,12 +50,14 @@ class Solver():
                                       shuffle=False,
                                       drop_last=True,
                                       collate_fn=custom_collate_fn)
-        model = importlib.import_module((config['model']))
+        model = importlib.import_module('model.{}'.format(config['model']))
         self.net = model.SVHFNet().to(self.device)
         if config['weight_init'] == 'xavier_uniform':
             print('Initialize weight with xavier_uniform.')
-        else:
+        elif config['weight_init'] == 'gaussian':
             print('Initialize weight with gaussian.')
+        else:
+            print('Initialize weight with pytorch defualt setting.')
         self.net.apply(weight_init)
         if config['load_model']:
             print('Load pretrained model:', config['load_path'])
@@ -140,7 +144,7 @@ class Solver():
         return average_loss
 
     def test(self):
-        print('Start test')
+        print('Start test..')
         self.net.eval()
         cnt = 0
         total_loss = 0
