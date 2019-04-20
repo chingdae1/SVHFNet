@@ -1,4 +1,4 @@
-model_name: baseline
+model_name: baseline_relu7
 model: model
 
 data_dir: ../SVHF_dataset
