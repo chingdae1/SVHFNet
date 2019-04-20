@@ -1,4 +1,4 @@
-model_name: model3
+model_name: model3_xavier_sgd
 model: model3
 
 data_dir: ../SVHF_dataset
@@ -11,6 +11,7 @@ epoch: 30
 lr_decay_factor: 0.1
 patience: 1
 weight_init: xavier_uniform
+optim: sgd
 
 load_model: False
 load_path: ./saved/baseline_plateau/model_1.pt
