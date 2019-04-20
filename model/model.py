@@ -27,12 +27,13 @@ class VisualStream(nn.Module):
         self.fc6 = nn.Linear(7*7*256, 4096)
         self.relu6 = nn.ReLU()
         self.fc7 = nn.Linear(4096, 1024)
+        self.relu7 = nn.ReLU()
 
     def forward(self, x):
         x = self.body(x)  # (B, 256, 7, 7)
         x = x.view(x.shape[0], -1)
         x = self.relu6(self.fc6(x))
-        x = self.fc7(x)
+        x = self.relu7(self.fc7(x))
         return x
 
 
@@ -62,6 +63,7 @@ class AudioStream(nn.Module):
         self.relu6 = nn.ReLU()
         self.apool6 = nn.AvgPool2d((1, N))
         self.fc7 = nn.Linear(4096, 1024)
+        self.relu7 = nn.ReLU()
 
     def forward(self, x):
         x = self.body(x)  # (B, 256, 9, 8)
@@ -73,7 +75,7 @@ class AudioStream(nn.Module):
         x = torch.stack(x_out_list, dim=2)  # (B, 4096, 8)
         x = self.apool6(x)
         x = x.view(-1, 4096)
-        x = self.fc7(x)
+        x = self.relu7(self.fc7(x))
         return x
 
 
