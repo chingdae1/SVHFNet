@@ -65,22 +65,25 @@ class Solver():
             self.net.load_state_dict(state_dict)
 
         if config['multi_gpu']:
-            print('Use Multi GPU')
+            print('Use Multi GPU.')
             self.net = nn.DataParallel(self.net, device_ids=config['gpu_ids'])
 
         self.criterion = nn.CrossEntropyLoss()
-        # self.optim = torch.optim.SGD(params=self.net.parameters(),
-        #                              lr=config['lr'],
-        #                              momentum=0.9,
-        #                              weight_decay=0.0005)
-        self.optim = torch.optim.Adam(params=self.net.parameters(),
-                                      lr=config['lr'])
+        if config['optim'] == 'sgd':
+            print('Use SGD optimizer.')
+            self.optim = torch.optim.SGD(params=self.net.parameters(),
+                                         lr=config['lr'],
+                                         momentum=0.9,
+                                         weight_decay=0.0005)
+        else:
+            print('Use Adam optimizer.')
+            self.optim = torch.optim.Adam(params=self.net.parameters(),
+                                          lr=config['lr'])
         self.scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(self.optim,
                                                                     factor=config['lr_decay_factor'],
                                                                     patience=config['patience'],
                                                                     verbose=True)
         self.saved_dir = os.path.join(config['save_dir'], config['model_name'])
-        os.makedirs(self.saved_dir, exist_ok=True)
 
     def fit(self):
         print('Start training..')
@@ -176,6 +179,7 @@ class Solver():
         self.net.train()
 
     def save(self, epoch):
+        os.makedirs(self.saved_dir, exist_ok=True)
         if self.config['multi_gpu']:
             state_dict = self.net.module.state_dict()
         else:
