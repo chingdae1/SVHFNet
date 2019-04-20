@@ -10,6 +10,7 @@ lr: 0.01
 epoch: 30
 lr_decay_factor: 0.1
 patience: 1
+weight_init: default
 
 load_model: False
 load_path: ./saved/baseline_plateau/model_1.pt
