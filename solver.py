@@ -55,6 +55,8 @@ class Solver():
         self.net = model.SVHFNet().to(self.device)
         if config['weight_init'] == 'xavier_uniform':
             print('Initialize weight with xavier_uniform.')
+        elif config['weight_init'] == 'kaiming_uniform':
+            print('Initialize weight with kaiming_uniform.')
         elif config['weight_init'] == 'gaussian':
             print('Initialize weight with gaussian.')
         else:
