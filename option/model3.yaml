@@ -10,7 +10,7 @@ lr: 0.01
 epoch: 30
 lr_decay_factor: 0.1
 patience: 1
-weight_init: xavier_uniform
+weight_init: kaiming_uniform
 optim: adam
 
 load_model: False
