@@ -86,8 +86,10 @@ class SVHFNet(nn.Module):
         self.vis_stream = VisualStream()
         self.aud_stream = AudioStream()
         self.fc8 = nn.Linear(3072, 1024)
+        self.bn8 = nn.BatchNorm1d(1024)
         self.relu8 = nn.ReLU()
         self.fc9 = nn.Linear(1024, 512)
+        self.bn9 = nn.BatchNorm1d(512)
         self.relu9 = nn.ReLU()
         self.fc10 = nn.Linear(512, 2)
 
@@ -96,8 +98,8 @@ class SVHFNet(nn.Module):
         f_b_embedding = self.vis_stream(face_b)
         a_embedding = self.aud_stream(audio)
         concat = torch.cat([f_a_embedding_, f_b_embedding, a_embedding], dim=1)
-        x = self.relu8(self.fc8(concat))
-        x = self.relu9(self.fc9(x))
+        x = self.relu8(self.bn8(self.fc8(concat)))
+        x = self.relu9(self.bn9(self.fc9(x)))
         x = self.fc10(x)
         return x
 
