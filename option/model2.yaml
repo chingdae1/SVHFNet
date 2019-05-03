@@ -11,7 +11,7 @@ epoch: 30
 lr_decay_factor: 0.1
 patience: 1
 weight_init: kaiming_uniform
-optim: adam
+optim: sgd
 
 load_model: False
 load_path: ./saved/baseline_plateau/model_1.pt
@@ -22,7 +22,7 @@ sample_for: 20
 val_sample_dir: ./val_sample
 save_dir: ./saved
 
-multi_gpu: True
+multi_gpu: False
 gpu_ids:
     - 0
     - 1
