@@ -46,8 +46,7 @@ class AudioStream(nn.Module):
             nn.BatchNorm2d(96), nn.ReLU(),
             nn.MaxPool2d(kernel_size=(2, 2)),
 
-            nn.Conv2d(in_channels=96, out_channels=256, kernel_size=(5, 5), stride=2,
-                      padding=(0, 1)),
+            nn.Conv2d(in_channels=96, out_channels=256, kernel_size=(5, 5), stride=2, padding=(0, 1)),
             nn.BatchNorm2d(256), nn.ReLU(),
             nn.MaxPool2d(kernel_size=(2, 2)),
 
