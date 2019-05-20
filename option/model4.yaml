@@ -24,7 +24,7 @@ save_every: 1
 val_sample_dir: ./val_sample
 save_dir: ./saved
 
-multi_gpu: True
+multi_gpu: False
 gpu_ids:
     - 0
     - 1
