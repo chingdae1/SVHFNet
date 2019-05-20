@@ -13,8 +13,8 @@ patience: 1
 weight_init: kaiming_uniform
 optim: sgd
 
-load_model: False
-load_path: ./saved/baseline_plateau/model_1.pt
+load_model: True
+load_path: ./saved/model3_bn/model_16.pt
 
 val_every: 1
 save_every: 1
