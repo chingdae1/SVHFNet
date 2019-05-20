@@ -1,0 +1,27 @@
+model_name: model4
+model: model4
+
+data_dir: ../SVHF_dataset
+triplet_dir: ./triplets
+batch_size: 64
+num_workers: 32
+
+lr: 0.001
+epoch: 30
+lr_decay_factor: 0.1
+patience: 1
+weight_init: kaiming_uniform
+optim: sgd
+
+load_model: False
+load_path: ./saved/model3_bn/model_16.pt
+
+val_every: 1
+save_every: 1
+val_sample_dir: ./val_sample
+save_dir: ./saved
+
+multi_gpu: True
+gpu_ids:
+    - 0
+    - 1
