@@ -6,7 +6,7 @@ from solver import Solver
 def main():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--config_path', type=str, default='./option/baseline.yaml')
+    parser.add_argument('--config_path', type=str, default='./option/model4.yaml')
 
     args = parser.parse_args()
 

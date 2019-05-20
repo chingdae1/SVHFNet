@@ -56,8 +56,8 @@ class Solver():
                                       drop_last=True,
                                       collate_fn=custom_collate_fn)
         model = importlib.import_module('model.{}'.format(config['model']))
-        self.net = model.SVHFNet().to(self.device)
         if config['model'] != 'model4':
+            self.net = model.SVHFNet().to(self.device)
             if config['weight_init'] == 'xavier_uniform':
                 print('Initialize weight with xavier_uniform.')
             elif config['weight_init'] == 'kaiming_uniform':
@@ -68,6 +68,9 @@ class Solver():
                 print('Initialize weight with defualt setting.')
             self.net.apply(weight_init)
         else:
+            self.net = model.SVHFNet(config['res_ckpt_path'],
+                                     config['pase_cfg_path'],
+                                     config['pase_ckpt_path']).to(self.device)
             print('Don\'t apply any weight init method for model4.')
         if config['load_model']:
             print('Load pretrained model:', config['load_path'])

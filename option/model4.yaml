@@ -1,5 +1,8 @@
 model_name: model4
 model: model4
+res_ckpt_path: ./saved/model3_bn/model_16.pt
+pase_cfg_path: ../pase/cfg/PASE.cfg
+pase_ckpt_path: ../pase/PASE.ckpt
 
 data_dir: ../SVHF_dataset
 triplet_dir: ./triplets

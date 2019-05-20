@@ -3,9 +3,11 @@ import torch.nn as nn
 import torch.nn.functional as F
 import sys
 import os
-sys.path.append(os.path.abspath('../../pase'))
+pase_path = os.path.abspath('../pase')
+sys.path.append(pase_path)
+print('Add pase to system path:', pase_path)
 from pase.models.frontend import wf_builder
-import model3
+import model.model3
 
 
 # RestNet for visual stream, PASE for audio stream / All network is pretrained.
@@ -30,7 +32,7 @@ class AudioStream(nn.Module):
 class SVHFNet(nn.Module):
     def __init__(self, res_ckpt_path, pase_cfg_path, pase_ckpt_path):
         super().__init__()
-        m3 = model3.SVHFNet()
+        m3 = model.model3.SVHFNet()
         map_location = None if torch.cuda.is_available() else 'cpu'
         check_point = torch.load(res_ckpt_path, map_location=map_location)
         state_dict = check_point['net']
