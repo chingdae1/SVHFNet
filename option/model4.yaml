@@ -6,7 +6,7 @@ pase_ckpt_path: ../pase/PASE.ckpt
 
 data_dir: ../SVHF_dataset
 triplet_dir: ./triplets
-batch_size: 64
+batch_size: 32
 num_workers: 32
 
 lr: 0.001
