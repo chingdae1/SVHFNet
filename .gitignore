@@ -4,3 +4,4 @@ triplets/
 __pycache__/
 .DS_Store
 toy_dataset
+saved/
