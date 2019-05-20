@@ -9,9 +9,10 @@ from PIL import Image
 
 
 class Dataset(data.Dataset):
-    def __init__(self, data_dir, triplet_dir, mode, fixed_offset):
+    def __init__(self, data_dir, triplet_dir, mode, fixed_offset, load_raw=False):
         self.data_dir = data_dir
         self.fixed_offset = fixed_offset
+        self.load_raw = load_raw
         triplet_path = os.path.join(triplet_dir, 'triplets_' + mode + '.txt')
         with open(triplet_path, 'r') as f:
             self.all_triplets = f.readlines()
@@ -50,6 +51,8 @@ class Dataset(data.Dataset):
             max_offset = y.shape[0] - 48000
             offset = random.randint(0, max_offset)
         y = y[offset:offset+48000]
+        if self.load_raw:
+            return y
         spect = Dataset.get_spectrogram(y)
         for i in range(spect.shape[1]):
             f_bin = spect[:, i]

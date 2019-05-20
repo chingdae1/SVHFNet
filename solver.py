@@ -21,18 +21,22 @@ class Solver():
                     pass
         self.config = config
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+        load_raw = True if config['model'] == 'model4' else False
         self.train_data = Dataset(data_dir=config['data_dir'],
                                   triplet_dir=config['triplet_dir'],
                                   mode='train',
-                                  fixed_offset=False)
+                                  fixed_offset=False,
+                                  load_raw=load_raw)
         self.val_data = Dataset(data_dir=config['data_dir'],
                                 triplet_dir=config['triplet_dir'],
                                 mode='val',
-                                fixed_offset=True)
+                                fixed_offset=True,
+                                load_raw=load_raw)
         self.test_data = Dataset(data_dir=config['data_dir'],
                                  triplet_dir=config['triplet_dir'],
                                  mode='test',
-                                 fixed_offset=True)
+                                 fixed_offset=True,
+                                 load_raw=load_raw)
         self.train_loader = DataLoader(self.train_data,
                                        batch_size=config['batch_size'],
                                        num_workers=config['num_workers'],
