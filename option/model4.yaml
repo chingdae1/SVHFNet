@@ -6,7 +6,7 @@ pase_ckpt_path: ../pase/PASE.ckpt
 
 data_dir: ../SVHF_dataset
 triplet_dir: ./triplets
-batch_size: 32
+batch_size: 64
 num_workers: 32
 
 lr: 0.001
@@ -24,7 +24,7 @@ save_every: 1
 val_sample_dir: ./val_sample
 save_dir: ./saved
 
-multi_gpu: False
+multi_gpu: True
 gpu_ids:
     - 0
     - 1
