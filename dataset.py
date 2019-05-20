@@ -52,6 +52,7 @@ class Dataset(data.Dataset):
             offset = random.randint(0, max_offset)
         y = y[offset:offset+48000]
         if self.load_raw:
+            y = np.expand_dims(y, axis=0)
             return y
         spect = Dataset.get_spectrogram(y)
         for i in range(spect.shape[1]):
