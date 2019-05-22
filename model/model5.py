@@ -11,7 +11,7 @@ import model.model3
 
 
 # RestNet for visual stream, PASE for audio stream / All network is pretrained.
-
+# Difference from model4: Average pooling on audio time, so that it makes model invariant to time.
 class AudioStream(nn.Module):
     def __init__(self, pase):
         super().__init__()
