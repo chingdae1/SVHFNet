@@ -21,7 +21,7 @@ class Solver():
                     pass
         self.config = config
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-        load_raw = True if config['model'] == 'model4' else False
+        load_raw = True if config['model'] == 'model4' or config['model'] == 'model5' else False
         self.train_data = Dataset(data_dir=config['data_dir'],
                                   triplet_dir=config['triplet_dir'],
                                   mode='train',
@@ -56,7 +56,7 @@ class Solver():
                                       drop_last=True,
                                       collate_fn=custom_collate_fn)
         model = importlib.import_module('model.{}'.format(config['model']))
-        if config['model'] != 'model4':
+        if config['model'] != 'model4' and config['model'] != 'model5':
             self.net = model.SVHFNet().to(self.device)
             if config['weight_init'] == 'xavier_uniform':
                 print('Initialize weight with xavier_uniform.')
