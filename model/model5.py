@@ -16,10 +16,13 @@ class AudioStream(nn.Module):
     def __init__(self, pase):
         super().__init__()
         self.pase = pase
+        self.fc1 = nn.Linear(100, 1024)
 
     def forward(self, x):
         x = self.pase(x)  # (B, 100, 300) for 3s audio
         x = F.adaptive_avg_pool1d(x, 1).squeeze(dim=2)  # (B, 100)
+        x = F.relu(x)
+        x = self.fc1(x)
         return x
 
 
@@ -36,7 +39,7 @@ class SVHFNet(nn.Module):
         pase.load_pretrained(pase_ckpt_path, load_last=True, verbose=True)
         self.aud_stream = AudioStream(pase)
 
-        self.fc8 = nn.Linear(2148, 1024)
+        self.fc8 = nn.Linear(3072, 1024)
         self.bn8 = nn.BatchNorm1d(1024)
         self.relu8 = nn.ReLU()
         self.fc9 = nn.Linear(1024, 512)

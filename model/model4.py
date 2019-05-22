@@ -54,6 +54,7 @@ class SVHFNet(nn.Module):
         f_a_embedding_ = self.vis_stream(face_a)
         f_b_embedding = self.vis_stream(face_b)
         a_embedding = self.aud_stream(audio)
+        a_embedding = F.relu(a_embedding)
         concat = torch.cat([f_a_embedding_, f_b_embedding, a_embedding], dim=1)
         x = self.relu8(self.bn8(self.fc8(concat)))
         x = self.relu9(self.bn9(self.fc9(x)))
